@@ -3,79 +3,111 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Solicitud de Comunicado AT&T/ARSA</title>
+  <title>Solicitud de comunicado AT&T/ARSA</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      background-color: #f4f7fa;
-      color: #333;
-      padding: 2rem;
+      margin: 0;
+      background-color: #f2f6fc;
+      color: #1b1f23;
     }
-    h1 {
+
+    .container {
+      max-width: 800px;
+      margin: 40px auto;
+      background: white;
+      padding: 30px 40px;
+      border-radius: 10px;
+      box-shadow: 0 0 12px rgba(0, 0, 0, 0.1);
+    }
+
+    h2 {
       color: #003366;
+      margin-bottom: 30px;
+      text-align: center;
     }
+
     label {
       font-weight: bold;
-      margin-top: 1rem;
+      margin-top: 20px;
       display: block;
     }
-    input, select, textarea {
+
+    input[type="text"],
+    textarea,
+    select,
+    input[type="date"],
+    input[type="time"] {
       width: 100%;
-      padding: 0.5rem;
-      margin: 0.3rem 0 1rem 0;
+      padding: 8px 10px;
+      margin-top: 6px;
       border: 1px solid #ccc;
       border-radius: 4px;
+      box-sizing: border-box;
+      font-size: 14px;
     }
+
+    input[type="date"],
+    input[type="time"] {
+      max-width: 200px;
+    }
+
     .checkbox-group {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 1rem;
+      margin-top: 10px;
+      margin-bottom: 20px;
     }
+
+    .checkbox-group label {
+      font-weight: normal;
+      display: block;
+      margin-top: 4px;
+    }
+
     button {
       background-color: #003366;
       color: white;
+      padding: 10px 25px;
       border: none;
-      padding: 0.75rem 1.5rem;
+      border-radius: 6px;
       cursor: pointer;
-      border-radius: 4px;
+      margin-top: 20px;
+      font-size: 16px;
     }
+
     button:hover {
-      background-color: #0055aa;
-    }
-    .half-input {
-      width: 48%;
-      display: inline-block;
+      background-color: #00529b;
     }
   </style>
 </head>
 <body>
-  <h1>Solicitud de Comunicado AT&T/ARSA</h1>
-  <form id="comunicadoForm">
+  <div class="container">
+    <h2>Solicitud de comunicado AT&T/ARSA</h2>
+
     <label>Nombre del comunicado:</label>
-    <input type="text" id="nombre" required>
+    <input type="text" id="nombre" />
 
     <label>Personal al que va dirigido:</label>
-    <input type="text" id="dirigido" required>
+    <input type="text" id="dirigido" />
 
     <label>Información de relevancia:</label>
-    <input type="text" id="relevancia" required>
+    <textarea id="relevancia" rows="3"></textarea>
 
     <label>Descripción o información del comunicado:</label>
-    <textarea id="descripcion" rows="5" required></textarea>
+    <textarea id="descripcion" rows="5"></textarea>
 
     <label>Medio por el que se enviará:</label>
     <div class="checkbox-group">
-      <label><input type="checkbox" name="medio" value="Correo"> Correo</label>
-      <label><input type="checkbox" name="medio" value="Teams"> Teams</label>
-      <label><input type="checkbox" name="medio" value="WhatsApp (Para gerentes de zona)"> WhatsApp (Para gerentes de zona)</label>
-      <label><input type="checkbox" name="medio" value="Viva Engage"> Viva Engage</label>
+      <label><input type="checkbox" name="medio" value="Correo" /> Correo</label>
+      <label><input type="checkbox" name="medio" value="Teams a través de Coach Virtual" /> Teams a través de Coach Virtual</label>
+      <label><input type="checkbox" name="medio" value="WhatsApp (Para gerentes de zona)" /> WhatsApp (Para gerentes de zona)</label>
+      <label><input type="checkbox" name="medio" value="Viva Engage" /> Viva Engage</label>
     </div>
 
     <label>Fecha de envío:</label>
-    <input type="date" id="fecha">
+    <input type="date" id="fecha" />
 
     <label>Hora de envío:</label>
-    <input type="time" id="hora">
+    <input type="time" id="hora" />
 
     <label>¿Desea que el comunicado se envíe de forma recurrente?</label>
     <select id="recurrente">
@@ -83,38 +115,38 @@
       <option value="Sí">Sí</option>
     </select>
 
-    <div id="recurrenciaCampos" style="display:none;">
+    <div id="recurrenciaCampos" style="display: none;">
       <label>Días de la semana:</label>
       <div class="checkbox-group">
-        <label><input type="checkbox" name="dias" value="Lunes"> Lunes</label>
-        <label><input type="checkbox" name="dias" value="Martes"> Martes</label>
-        <label><input type="checkbox" name="dias" value="Miércoles"> Miércoles</label>
-        <label><input type="checkbox" name="dias" value="Jueves"> Jueves</label>
-        <label><input type="checkbox" name="dias" value="Viernes"> Viernes</label>
-        <label><input type="checkbox" name="dias" value="Sábado"> Sábado</label>
-        <label><input type="checkbox" name="dias" value="Domingo"> Domingo</label>
+        <label><input type="checkbox" name="dias" value="Lunes" /> Lunes</label>
+        <label><input type="checkbox" name="dias" value="Martes" /> Martes</label>
+        <label><input type="checkbox" name="dias" value="Miércoles" /> Miércoles</label>
+        <label><input type="checkbox" name="dias" value="Jueves" /> Jueves</label>
+        <label><input type="checkbox" name="dias" value="Viernes" /> Viernes</label>
+        <label><input type="checkbox" name="dias" value="Sábado" /> Sábado</label>
+        <label><input type="checkbox" name="dias" value="Domingo" /> Domingo</label>
       </div>
 
       <label>Fecha de inicio:</label>
-      <input type="date" id="inicio">
+      <input type="date" id="inicio" />
 
       <label>Fecha de fin:</label>
-      <input type="date" id="fin">
+      <input type="date" id="fin" />
     </div>
 
-    <button type="button" onclick="generarPDF()">Descargar PDF</button>
-  </form>
+    <button onclick="generarPDF()">Descargar PDF</button>
+  </div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script>
-    document.getElementById("recurrente").addEventListener("change", function() {
+    document.getElementById("recurrente").addEventListener("change", function () {
       const mostrar = this.value === "Sí";
       document.getElementById("recurrenciaCampos").style.display = mostrar ? "block" : "none";
     });
 
     async function generarPDF() {
       const { jsPDF } = window.jspdf;
-      const doc = new jsPDF();
+      const doc = new jsPDF({ unit: "mm", format: "a4" });
 
       const nombre = document.getElementById("nombre").value;
       const dirigido = document.getElementById("dirigido").value;
@@ -125,13 +157,22 @@
       const hora = document.getElementById("hora").value;
       const recurrente = document.getElementById("recurrente").value;
 
-      let y = 10;
-      const addLine = (label, text) => {
-        doc.text(`${label}`, 10, y);
-        y += 7;
-        doc.text(`${text}`, 15, y);
-        y += 10;
-      }
+      let y = 15;
+      const margenIzquierdo = 15;
+      const anchoMax = 180;
+
+      const addLine = (label, text, extraSpace = true) => {
+        doc.setFont(undefined, "bold");
+        doc.text(label, margenIzquierdo, y);
+        y += 6;
+        doc.setFont(undefined, "normal");
+
+        const lines = doc.splitTextToSize(text, anchoMax);
+        doc.text(lines, margenIzquierdo + 2, y);
+        y += lines.length * 6;
+
+        if (extraSpace) y += 4;
+      };
 
       addLine("Nombre del comunicado:", nombre);
       addLine("Personal al que va dirigido:", dirigido);
