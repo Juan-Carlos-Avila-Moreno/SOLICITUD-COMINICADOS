@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Solicitud de Comunicado AT&T/ARSA</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f5f8fa;
+      padding: 20px;
+      color: #1d1d1f;
+    }
+    h2 {
+      color: #003366;
+    }
+    label {
+      font-weight: bold;
+    }
+    input[type="text"], textarea, select, input[type="date"], input[type="time"] {
+      width: 100%;
+      padding: 8px;
+      margin: 6px 0 12px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    .checkboxes label {
+      display: block;
+      margin: 3px 0;
+      font-weight: normal;
+    }
+    .row {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    .row input[type="date"], .row input[type="time"] {
+      width: 100%;
+    }
+    button {
+      background-color: #003366;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    button:hover {
+      background-color: #005599;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Solicitud de Comunicado AT&T/ARSA</h2>
+
+  <label>Nombre del comunicado:</label>
+  <input type="text" id="nombreComunicado">
+
+  <label>Personal al que va dirigido:</label>
+  <input type="text" id="dirigido">
+
+  <label>Información de relevancia:</label>
+  <textarea id="relevancia" rows="3"></textarea>
+
+  <label>Descripción o información del comunicado:</label>
+  <textarea id="cuerpo" rows="5"></textarea>
+
+  <label>Medios de envío:</label>
+  <div class="checkboxes" id="mediosCheckboxes">
+    <label><input type="checkbox" value="Correo"> Correo</label>
+    <label><input type="checkbox" value="Teams / Coach Virtual"> Teams / Coach Virtual</label>
+    <label><input type="checkbox" value="WhatsApp (Para gerentes de zona)"> WhatsApp (Para gerentes de zona)</label>
+    <label><input type="checkbox" value="Viva Engage"> Viva Engage</label>
+  </div>
+
+  <label>Fecha de envío:</label>
+  <div class="row">
+    <input type="date" id="fechaEnvio">
+    <input type="time" id="horaEnvio">
+  </div>
+
+  <label>¿Desea que el comunicado se envíe de forma recurrente?</label>
+  <select id="recurrencia">
+    <option value="No">No</option>
+    <option value="Sí">Sí</option>
+  </select>
+
+  <div id="opcionesRecurrencia" style="display:none;">
+    <label>Días de la semana:</label>
+    <div class="checkboxes" id="diasSemana">
+      <label><input type="checkbox" value="Lunes"> Lunes</label>
+      <label><input type="checkbox" value="Martes"> Martes</label>
+      <label><input type="checkbox" value="Miércoles"> Miércoles</label>
+      <label><input type="checkbox" value="Jueves"> Jueves</label>
+      <label><input type="checkbox" value="Viernes"> Viernes</label>
+      <label><input type="checkbox" value="Sábado"> Sábado</label>
+      <label><input type="checkbox" value="Domingo"> Domingo</label>
+    </div>
+
+    <label>Fecha de inicio:</label>
+    <input type="date" id="fechaInicio">
+
+    <label>Fecha de fin:</label>
+    <input type="date" id="fechaFin">
+  </div>
+
+  <br>
+  <button onclick="generarPDF()">Descargar PDF</button>
+
+  <script>
+    document.getElementById("recurrencia").addEventListener("change", function() {
+      document.getElementById("opcionesRecurrencia").style.display = this.value === "Sí" ? "block" : "none";
+    });
+
+    async function generarPDF() {
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF();
+
+      const nombre = document.getElementById("nombreComunicado").value;
+      const dirigido = document.getElementById("dirigido").value;
+      const relevancia = document.getElementById("relevancia").value;
+      const cuerpo = document.getElementById("cuerpo").value;
+      const fecha = document.getElementById("fechaEnvio").value;
+      const hora = document.getElementById("horaEnvio").value;
+      const recurrencia = document.getElementById("recurrencia").value;
+
+      const medios = Array.from(document.querySelectorAll('#mediosCheckboxes input:checked')).map(cb => cb.value).join(', ');
+      const dias = Array.from(document.querySelectorAll('#diasSemana input:checked')).map(cb => cb.value).join(', ');
+      const fechaInicio = document.getElementById("fechaInicio").value;
+      const fechaFin = document.getElementById("fechaFin").value;
+
+      let y = 10;
+      doc.setFontSize(14);
+      doc.setTextColor(0, 51, 102);
+      doc.text("Solicitud de Comunicado AT&T/ARSA", 10, y); y += 10;
+      doc.setFontSize(11);
+      doc.setTextColor(0, 0, 0);
+
+      const agregarLinea = (titulo, texto) => {
+        doc.setFont(undefined, 'bold');
+        doc.text(`${titulo}:`, 10, y);
+        doc.setFont(undefined, 'normal');
+        doc.text(`${texto}`, 60, y); 
+        y += 8;
+      };
+
+      agregarLinea("Nombre del comunicado", nombre);
+      agregarLinea("Dirigido a", dirigido);
+      agregarLinea("Información de relevancia", relevancia);
+      agregarLinea("Descripción / Información del comunicado", cuerpo);
+      agregarLinea("Medios de envío", medios);
+      agregarLinea("Fecha de envío", fecha);
+      agregarLinea("Hora", hora);
+      agregarLinea("¿Recurrente?", recurrencia);
+      if (recurrencia === "Sí") {
+        agregarLinea("Días de la semana", dias);
+        agregarLinea("Fecha de inicio", fechaInicio);
+        agregarLinea("Fecha de fin", fechaFin);
+      }
+
+      doc.save("Solicitud_Comunicado_ARSA.pdf");
+    }
+  </script>
+</body>
+</html>
